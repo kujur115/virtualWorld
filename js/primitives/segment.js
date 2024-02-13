@@ -3,6 +3,12 @@ class Segment {
     this.p1 = p1;
     this.p2 = p2;
   }
+  equals(other) {
+    return this.includes(other.p1) && this.includes(other.p2);
+  }
+  includes(point) {
+    return this.p1.equals(point) || this.p2.equals(point);
+  }
   draw(ctx, width = 2, color = "black") {
     ctx.beginPath();
     ctx.lineWidth = width;
