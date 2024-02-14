@@ -28,7 +28,7 @@ class Envelope {
     // return new Polygon([p1_ccw, p2_ccw, p2_cw, p1_cw]);
     return new Polygon(points);
   }
-  draw(ctx) {
-    this.poly.draw(ctx);
+  draw(ctx, options = {}) {
+    this.poly.draw(ctx, options);
   }
 }
