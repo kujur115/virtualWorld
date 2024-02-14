@@ -3,6 +3,29 @@ class Graph {
     this.points = points;
     this.segments = segments;
   }
+  static load(info) {
+    const points = info.points.map((i) => new Point(i.x, i.y));
+    const segments = info.segments.map(
+      (i) =>
+        new Segment(
+          points.find((p) => p.equals(i.p1)),
+          points.find((p) => p.equals(i.p2))
+        )
+    );
+
+    // for (const point of info.points) {
+    //   points.push(new Point(point.x, point.y));
+    // }
+    // for (const segment of info.segments) {
+    //   segments.push(
+    //     new Segment(
+    //       points.find((p) => p.equals(segment.p1)),
+    //       points.find((p) => p.equals(segment.p2))
+    //     )
+    //   );
+    // }
+    return new Graph(points, segments);
+  }
   tryAddPoint(point) {
     if (!this.containsPoint(point)) {
       this.addPoint(point);
