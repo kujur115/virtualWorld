@@ -10,33 +10,36 @@ class GraphEditor {
     this.ctx = this.canvas.getContext("2d");
     this.#addEventListeners();
   }
-  #addEventListeners() {
-    this.canvas.addEventListener("mousedown", (e) => {
-      if (e.button === 2) {
-        // ? right click
-        if (this.hovered) this.#removePoint(this.hovered);
-        else this.selected = null;
-      } else if (e.button === 0) {
-        // ? left click
+  #handleMouseDown(e) {
+    if (e.button === 2) {
+      // ? right click
+      if (this.selected) this.selected = null;
+      else if (this.hovered) this.#removePoint(this.hovered);
+      else this.selected = null;
+    } else if (e.button === 0) {
+      // ? left click
 
-        if (this.hovered) {
-          this.#select(this.hovered);
-          this.dragging = true;
-          return;
-        }
-        this.graph.addPoint(this.mouse);
-        this.#select(this.mouse);
-        this.hovered = this.mouse;
+      if (this.hovered) {
+        this.#select(this.hovered);
+        this.dragging = true;
+        return;
       }
-    });
-    this.canvas.addEventListener("mousemove", (e) => {
-      this.mouse = new Point(e.offsetX, e.offsetY);
-      this.hovered = getNearestPoint(this.mouse, this.graph.points, 10);
-      if (this.dragging) {
-        this.selected.x = this.mouse.x;
-        this.selected.y = this.mouse.y;
-      }
-    });
+      this.graph.addPoint(this.mouse);
+      this.#select(this.mouse);
+      this.hovered = this.mouse;
+    }
+  }
+  #handleMouseMove(e) {
+    this.mouse = new Point(e.offsetX, e.offsetY);
+    this.hovered = getNearestPoint(this.mouse, this.graph.points, 10);
+    if (this.dragging) {
+      this.selected.x = this.mouse.x;
+      this.selected.y = this.mouse.y;
+    }
+  }
+  #addEventListeners() {
+    this.canvas.addEventListener("mousedown", this.#handleMouseDown.bind(this));
+    this.canvas.addEventListener("mousemove", this.#handleMouseMove.bind(this));
     this.canvas.addEventListener("contextmenu", (e) => e.preventDefault());
     this.canvas.addEventListener("mouseup", () => (this.dragging = false));
   }
