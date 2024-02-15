@@ -2,6 +2,7 @@ const distance = (p1, p2) => Math.hypot(p1.x - p2.x, p1.y - p2.y);
 const average = (p1, p2) => new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
 const add = (p1, p2) => new Point(p1.x + p2.x, p1.y + p2.y);
 const subtract = (p1, p2) => new Point(p1.x - p2.x, p1.y - p2.y);
+const dot = (p1, p2) => p1.x * p2.x + p1.y * p2.y;
 const scale = (p1, scaler) => new Point(p1.x * scaler, p1.y * scaler);
 const normalize = (p) => scale(p, 1 / magnitude(p));
 const magnitude = (p) => Math.hypot(p.x, p.y);

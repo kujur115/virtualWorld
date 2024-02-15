@@ -26,6 +26,11 @@ class Graph {
     // }
     return new Graph(points, segments);
   }
+
+  hash() {
+    return JSON.stringify(this);
+  }
+
   tryAddPoint(point) {
     if (!this.containsPoint(point)) {
       this.addPoint(point);
