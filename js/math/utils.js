@@ -11,6 +11,7 @@ const translate = (loc, angle, offset) =>
 
 const angle = (p) => Math.atan2(p.y, p.x);
 const lerp = (a, b, t) => a + (b - a) * t;
+const lerp2D = (a, b, t) => new Point(lerp(a.x, b.x, t), lerp(a.y, b.y, t));
 
 const getRandomColor = () => {
   const hue = 209 + Math.random() * 260;
