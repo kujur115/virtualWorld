@@ -10,7 +10,14 @@ class GraphEditor {
     this.mouse = null;
 
     this.ctx = this.canvas.getContext("2d");
+  }
+  enable() {
     this.#addEventListeners();
+  }
+  disable() {
+    this.#removeEventListeners();
+    this.selected = null;
+    this.hovered = null;
   }
   #handleMouseDown(e) {
     if (e.button === 2) {
@@ -44,10 +51,20 @@ class GraphEditor {
     }
   }
   #addEventListeners() {
-    this.canvas.addEventListener("mousedown", this.#handleMouseDown.bind(this));
-    this.canvas.addEventListener("mousemove", this.#handleMouseMove.bind(this));
-    this.canvas.addEventListener("contextmenu", (e) => e.preventDefault());
-    this.canvas.addEventListener("mouseup", () => (this.dragging = false));
+    this.boundMouseDown = this.#handleMouseDown.bind(this);
+    this.boundMouseMove = this.#handleMouseMove.bind(this);
+    this.boundMouseUp = () => (this.dragging = false);
+    this.boundContextMenu = (e) => e.preventDefault();
+    this.canvas.addEventListener("mousedown", this.boundMouseDown);
+    this.canvas.addEventListener("mousemove", this.boundMouseMove);
+    this.canvas.addEventListener("contextmenu", this.boundContextMenu);
+    this.canvas.addEventListener("mouseup", this.boundMouseUp);
+  }
+  #removeEventListeners() {
+    this.canvas.removeEventListener("mousedown", this.boundMouseDown);
+    this.canvas.removeEventListener("mousemove", this.boundMouseMove);
+    this.canvas.removeEventListener("contextmenu", this.boundContextMenu);
+    this.canvas.removeEventListener("mouseup", this.boundMouseUp);
   }
   #select(point) {
     if (this.selected)
@@ -60,11 +77,11 @@ class GraphEditor {
     if (this.selected == point) this.selected = null;
   }
 
-dispose() {
-  this.graph.dispose();
-  this.selected=null;
-  this.hovered = null;
-}
+  dispose() {
+    this.graph.dispose();
+    this.selected = null;
+    this.hovered = null;
+  }
 
   display() {
     this.graph.draw(this.ctx);
