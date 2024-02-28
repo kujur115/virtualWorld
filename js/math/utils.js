@@ -47,3 +47,19 @@ const getNearestPoint = (loc, points, threshold = Number.MAX_SAFE_INTEGER) => {
   }
   return nearest;
 };
+const getNearestSegment = (
+  loc,
+  segments,
+  threshold = Number.MAX_SAFE_INTEGER
+) => {
+  let minDist = Number.MAX_SAFE_INTEGER;
+  let nearest = null;
+  for (const seg of segments) {
+    const dist = seg.distanceToPoint(loc);
+    if (dist < minDist && dist < threshold) {
+      minDist = dist;
+      nearest = seg;
+    }
+  }
+  return nearest;
+};

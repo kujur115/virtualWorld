@@ -55,6 +55,7 @@ class GraphEditor {
     this.boundMouseMove = this.#handleMouseMove.bind(this);
     this.boundMouseUp = () => (this.dragging = false);
     this.boundContextMenu = (e) => e.preventDefault();
+
     this.canvas.addEventListener("mousedown", this.boundMouseDown);
     this.canvas.addEventListener("mousemove", this.boundMouseMove);
     this.canvas.addEventListener("contextmenu", this.boundContextMenu);
