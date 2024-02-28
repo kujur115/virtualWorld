@@ -20,6 +20,9 @@ class World {
     this.intersections = [];
     this.buildings = [];
     this.trees = [];
+    this.laneGuides = [];
+    this.markings = [];
+
     this.generate();
   }
   generate() {
@@ -39,6 +42,17 @@ class World {
 
     this.buildings = this.#generateBuildings();
     this.trees = this.#generateTrees();
+    this.laneGuides.length = 0;
+    this.laneGuides.push(...this.#generateLaneGuides());
+  }
+  #generateLaneGuides() {
+    const tmpEnvelopes = [];
+    for (const seg of this.graph.segments)
+      tmpEnvelopes.push(
+        new Envelope(seg, this.roadWidth / 2, this.roadRoundness)
+      );
+    const segments = Polygon.union(tmpEnvelopes.map((e) => e.poly));
+    return segments;
   }
   #generateTrees() {
     const points = [
@@ -158,6 +172,7 @@ class World {
   draw(ctx, viewPoint) {
     for (const env of this.envelopes)
       env.draw(ctx, { fill: "#BBB", stroke: "#BBB", lineWidth: 15 });
+    for (const marking of this.markings) marking.draw(ctx);
     for (const seg of this.graph.segments)
       seg.draw(ctx, { color: "white", width: 4, dash: [10, 10] });
     for (const seg of this.roadBorders)
@@ -168,7 +183,10 @@ class World {
         b.base.distanceToPoint(viewPoint) - a.base.distanceToPoint(viewPoint)
     );
     for (const item of items) item.draw(ctx, viewPoint);
+
+    // ? for debugging
     // for (const tree of this.trees) tree.draw(ctx, viewPoint);
     // for (const bld of this.buildings) bld.draw(ctx, viewPoint);
+    // for (const lane of this.laneGuides) lane.draw(ctx, { color: "red" });
   }
 }

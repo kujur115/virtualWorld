@@ -8,6 +8,7 @@ class StopEditor {
 
     this.mouse = null;
     this.intent = null;
+    this.markings = world.markings;
   }
   enable() {
     this.#addEventListeners();
@@ -33,16 +34,39 @@ class StopEditor {
     this.mouse = this.viewport.getMouse(e, true);
     const seg = getNearestSegment(
       this.mouse,
-      this.world.graph.segments,
+      this.world.laneGuides,
       10 * this.viewport.zoom
     );
     if (seg) {
       const proj = seg.projectPoint(this.mouse);
-      if (proj.offset >= 0 && proj.offset <= 1) this.intent = proj.point;
+      if (proj.offset >= 0 && proj.offset <= 1)
+        this.intent = new Stop(
+          proj.point,
+          seg.directionVector(),
+          world.roadWidth / 2,
+          world.roadWidth / 2
+        );
       else this.intent = null;
     } else this.intent = null;
   }
-  #handleMouseDown() {}
+  #handleMouseDown(e) {
+    if (e.button == 0) {
+      // left click
+      if (this.intent) {
+        this.markings.push(this.intent);
+        this.intent = null;
+      }
+    } else if (e.button == 2) {
+      // right click
+      for (let i = 0; i < this.intent.length; i++) {
+        const poly = this.markings[i].poly;
+        if (poly.containsPoint(this.mouse)) {
+          this.markings.splice(i, 1);
+          return;
+        }
+      }
+    }
+  }
 
   display() {
     if (this.intent) this.intent.draw(this.ctx);
