@@ -1,16 +1,7 @@
-class Crossing {
+class Crossing extends Marking {
   constructor(center, directionVector, width, height) {
-    this.center = center;
-    this.directionVector = directionVector;
-    this.width = width;
-    this.height = height;
+    super(center, directionVector, width, height);
 
-    this.support = new Segment(
-      translate(center, angle(directionVector), height / 2),
-      translate(center, angle(directionVector), -height / 2)
-    );
-
-    this.poly = new Envelope(this.support, width, 0).poly;
     this.borders = [this.poly.segments[0], this.poly.segments[2]];
   }
   draw(ctx) {
@@ -24,7 +15,5 @@ class Crossing {
       color: "white",
       dash: [11, 11],
     });
-    
-    for(const b of this.borders) b.draw(ctx);
   }
 }
