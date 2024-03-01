@@ -1,4 +1,4 @@
-class StopEditor {
+class CrossingEditor {
   constructor(viewport, world) {
     this.viewport = viewport;
     this.world = world;
@@ -34,16 +34,16 @@ class StopEditor {
     this.mouse = this.viewport.getMouse(e, true);
     const seg = getNearestSegment(
       this.mouse,
-      this.world.laneGuides,
+      this.world.graph.segments,
       10 * this.viewport.zoom
     );
     if (seg) {
       const proj = seg.projectPoint(this.mouse);
       if (proj.offset >= 0 && proj.offset <= 1)
-        this.intent = new Stop(
+        this.intent = new Crossing(
           proj.point,
           seg.directionVector(),
-          world.roadWidth / 2,
+          world.roadWidth,
           world.roadWidth / 2
         );
       else this.intent = null;
@@ -56,7 +56,8 @@ class StopEditor {
         this.markings.push(this.intent);
         this.intent = null;
       }
-    } else if (e.button == 2) {
+    }
+    if (e.button == 2) {
       // right click
       for (let i = 0; i < this.markings.length; i++) {
         const poly = this.markings[i].poly;

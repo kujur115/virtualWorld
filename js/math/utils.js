@@ -6,6 +6,7 @@ const dot = (p1, p2) => p1.x * p2.x + p1.y * p2.y;
 const scale = (p1, scaler) => new Point(p1.x * scaler, p1.y * scaler);
 const normalize = (p) => scale(p, 1 / magnitude(p));
 const magnitude = (p) => Math.hypot(p.x, p.y);
+const perpendicular = (p) => new Point(-p.y, p.x);
 const translate = (loc, angle, offset) =>
   new Point(loc.x + offset * Math.cos(angle), loc.y + offset * Math.sin(angle));
 
