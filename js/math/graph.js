@@ -44,11 +44,11 @@ class Graph {
   containsPoint(point) {
     return this.points.find((p) => p.equals(point));
   }
-  containsSeqment(seq) {
+  containsSegment(seq) {
     return this.segments.find((s) => s.equals(seq));
   }
   tryAddSegment(seg) {
-    if (!this.containsSeqment(seg) && !seg.p1.equals(seg)) {
+    if (!this.containsSegment(seg) && !seg.p1.equals(seg)) {
       this.addSegment(seg);
       return true;
     }

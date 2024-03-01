@@ -1,10 +1,11 @@
 class Tree {
-  constructor(center, size, heightCoeff = 0.3) {
+  constructor(center, size, height = 200) {
     this.center = center;
     this.size = size; //? size of the base
-    this.heightCoeff = heightCoeff;
+    this.height = height;
     this.base = this.#generateLevel(center, size);
   }
+
   #generateLevel(point, size) {
     const points = [];
     const rad = size / 2;
@@ -16,9 +17,7 @@ class Tree {
     return new Polygon(points);
   }
   draw(ctx, viewPoint) {
-    const diff = subtract(this.center, viewPoint);
-    // this.center.draw(ctx, { size: this.size, color: "green" });
-    const top = add(this.center, scale(diff, this.heightCoeff));
+    const top = getFake3dPoint(this.center,viewPoint,this.height);
 
     let levelCount = 7;
     for (let level = 0; level < levelCount; level++) {
@@ -29,6 +28,5 @@ class Tree {
       const poly = this.#generateLevel(point, size);
       poly.draw(ctx, { fill: color, stroke: "rgba(0,0,0,0)" });
     }
-    // new Segment(this.center, top).draw(ctx);
   }
 }

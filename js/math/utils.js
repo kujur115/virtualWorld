@@ -18,6 +18,12 @@ const getRandomColor = () => {
   const hue = 209 + Math.random() * 260;
   return "hsl(" + hue + ", 100%, 60%)";
 };
+const getFake3dPoint = (point, viewPoint, height) => {
+  const dir = normalize(subtract(point, viewPoint));
+  const dist = distance(point, viewPoint);
+  const scaler = Math.atan(dist / 300) / (Math.PI / 2);
+  return add(point, scale(dir, height * scaler));
+};
 const getIntersection = (a, b, c, d) => {
   const tTop = (d.x - c.x) * (a.y - c.y) - (d.y - c.y) * (a.x - c.x);
   const uTop = (c.y - a.y) * (a.x - b.x) - (c.x - a.x) * (a.y - b.y);
