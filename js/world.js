@@ -17,7 +17,7 @@ class World {
     this.treeSize = treeSize;
 
     this.envelopes = [];
-    this.intersections = [];
+    this.roadBorders = [];
     this.buildings = [];
     this.trees = [];
     this.laneGuides = [];
@@ -25,6 +25,24 @@ class World {
 
     this.generate();
   }
+
+  static load(info) {
+    const world = new World(new Graph());
+    world.graph = Graph.load(info.graph);
+    world.roadRoundness = info.roadRoundness;
+    world.buildingWidth = info.buildingWidth;
+    world.buildingMinLength = info.buildingMinLength;
+    world.spacing = info.spacing;
+    world.treeSize = info.treeSize;
+    world.envelopes = info.envelopes.map((e) => Envelope.load(e));
+    world.roadBorders = info.roadBorders.map((b) => new Segment(b.p1, b.p2));
+    world.buildings = info.buildings.map((b) => Building.load(b));
+    world.trees = info.trees.map((t) => new Tree(t.center, info.treeSize));
+    world.laneGuides = info.laneGuides.map((l) => new Segment(l.p1, l.p2));
+    world.markings = info.markings.map((m) => Marking.load(m));
+    return world;
+  }
+
   generate() {
     this.envelopes.length = 0;
     for (const seg of this.graph.segments)

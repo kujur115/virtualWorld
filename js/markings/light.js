@@ -3,6 +3,7 @@ class Light extends Marking {
     super(center, directionVector, width, 18);
     this.state = "off";
     this.border = this.poly.segments[0];
+    this.type = "light";
   }
   draw(ctx) {
     const perp = perpendicular(this.directionVector);

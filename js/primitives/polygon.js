@@ -5,6 +5,9 @@ class Polygon {
     for (let i = 1; i <= points.length; i++)
       this.segments.push(new Segment(points[i - 1], points[i % points.length]));
   }
+  static load(info) {
+    return new Polygon(info.points.map((i) => new Point(i.x, i.y)));
+  }
   static union(polys) {
     Polygon.multiBreak(polys);
     const keptSegments = [];
